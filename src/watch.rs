@@ -5,7 +5,7 @@ use std::sync::mpsc::channel;
 use std::time::Duration;
 use std::time::Instant;
 
-pub fn watch(dir: &str, wait: f64, cmd: Vec<String>) {
+pub fn watch(dir: &str, wait: f64, cmd: &[String]) {
     let (tx, rx) = channel();
     let delay = Duration::from_millis((wait * 1000.0) as u64);
     let mut watcher: RecommendedWatcher = match Watcher::new(tx, delay) {

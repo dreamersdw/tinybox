@@ -5,7 +5,7 @@ use std::process::Command;
 use std::thread::sleep;
 use std::time::Duration;
 
-pub fn loops(interval: f64, count: usize, no_title: bool, cmd: Vec<String>) {
+pub fn loops(interval: f64, count: usize, no_title: bool, cmd: &[String]) {
     let shell = cmd.join(" ");
 
     let mut total = 1;

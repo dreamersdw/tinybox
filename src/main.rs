@@ -52,8 +52,8 @@ fn main() {
             no_title,
             cmd,
         } => {
-            loops::loops(interval, count, no_title, cmd);
+            loops::loops(interval, count, no_title, &cmd);
         }
-        Opt::Watch { dir, wait, cmd } => watch::watch(&dir, wait, cmd),
+        Opt::Watch { dir, wait, cmd } => watch::watch(&dir, wait, &cmd),
     }
 }
