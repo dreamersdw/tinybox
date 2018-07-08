@@ -26,7 +26,7 @@ pub fn watch(dir: &str, wait: f64, cmd: &[String]) {
         match rx.recv() {
             Ok(_) => {
                 if let Some(t) = last_run {
-                    if t.elapsed() < Duration::from_millis(500) {
+                    if t.elapsed() < Duration::from_secs(1) {
                         continue;
                     }
                 }
