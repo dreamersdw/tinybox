@@ -1,10 +1,12 @@
 #[macro_use]
 extern crate structopt;
 extern crate chrono;
+extern crate fs2;
 extern crate notify;
 
 use structopt::StructOpt;
 
+mod lock;
 mod loops;
 mod sum;
 mod watch;
@@ -12,7 +14,10 @@ mod watch;
 #[derive(StructOpt, Debug)]
 #[structopt(name = "tinybox", about = "An collection of cli tools")]
 enum Opt {
-    #[structopt(name = "sum", about = "calculate the sum of a series of numbers")]
+    #[structopt(
+        name = "sum",
+        about = "calculate the sum of a series of numbers"
+    )]
     Sum,
 
     #[structopt(name = "loop", about = "run a shell command repeatedly")]
@@ -30,13 +35,32 @@ enum Opt {
         cmd: Vec<String>,
     },
 
-    #[structopt(name = "watch", about = "run a shell command when any file changed")]
+    #[structopt(
+        name = "watch",
+        about = "run a shell command when any file changed"
+    )]
     Watch {
         #[structopt(short = "d", long = "dir", default_value = ".")]
         dir: String,
 
         #[structopt(short = "w", long = "wait", default_value = "1.0")]
         wait: f64,
+
+        #[structopt(name = "cmd", raw(required = "true"))]
+        cmd: Vec<String>,
+    },
+
+    #[structopt(
+        name = "lock",
+        about = "run a shell command when a lock is acquired"
+    )]
+    Lock {
+        #[structopt(
+            short = "l",
+            long = "lockfile",
+            default_value = "/tmp/tinybox-lock.lock"
+        )]
+        lock_file: String,
 
         #[structopt(name = "cmd", raw(required = "true"))]
         cmd: Vec<String>,
@@ -51,9 +75,8 @@ fn main() {
             count,
             no_title,
             cmd,
-        } => {
-            loops::loops(interval, count, no_title, &cmd);
-        }
+        } => loops::loops(interval, count, no_title, &cmd),
         Opt::Watch { dir, wait, cmd } => watch::watch(&dir, wait, &cmd),
+        Opt::Lock { lock_file, cmd } => lock::lock(lock_file, &cmd),
     }
 }
