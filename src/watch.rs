@@ -11,13 +11,13 @@ pub fn watch(dir: &str, wait: f64, cmd: &[String]) {
     let mut watcher: RecommendedWatcher = match Watcher::new(tx, delay) {
         Ok(w) => w,
         Err(e) => {
-            println!("{}", e);
+            eprintln!("{}", e);
             exit(-1);
         }
     };
 
     if let Err(e) = watcher.watch(&dir, RecursiveMode::Recursive) {
-        println!("{}", e);
+        eprintln!("{}", e);
         exit(1);
     }
     let shell = cmd.join(" ");
@@ -37,7 +37,7 @@ pub fn watch(dir: &str, wait: f64, cmd: &[String]) {
                         handle.wait().unwrap();
                     }
                     Err(e) => {
-                        println!("{}", e);
+                        eprintln!("{}", e);
                         exit(1);
                     }
                 }
@@ -45,7 +45,7 @@ pub fn watch(dir: &str, wait: f64, cmd: &[String]) {
                 last_run = Some(Instant::now());
             }
 
-            Err(e) => println!("watch error: {:?}", e),
+            Err(e) => eprintln!("watch error: {:?}", e),
         }
     }
 }

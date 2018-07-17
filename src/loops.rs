@@ -12,9 +12,9 @@ pub fn loops(interval: f64, count: usize, no_title: bool, cmd: &[String]) {
     loop {
         if !no_title {
             let now = chrono::Local::now().format("%Y-%m-%d %H:%M:%S").to_string();
-            println!("{} every {}s: {}", now, interval, shell);
+            eprintln!("{} every {}s: {}", now, interval, shell);
         } else {
-            println!();
+            eprintln!();
         }
 
         let mut command = Command::new("sh");
@@ -23,7 +23,7 @@ pub fn loops(interval: f64, count: usize, no_title: bool, cmd: &[String]) {
                 handle.wait().unwrap();
             }
             Err(e) => {
-                println!("{}", e);
+                eprintln!("{}", e);
                 exit(1);
             }
         }
