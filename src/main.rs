@@ -6,6 +6,7 @@ extern crate notify;
 
 use structopt::StructOpt;
 
+mod gen;
 mod lock;
 mod loops;
 mod sum;
@@ -65,6 +66,11 @@ enum Opt {
         #[structopt(name = "cmd", raw(required = "true"))]
         cmd: Vec<String>,
     },
+    #[structopt(
+        name = "gen",
+        about = "generate aliases for the tinybox tools"
+    )]
+    Gen {},
 }
 fn main() {
     let opt = Opt::from_args();
@@ -78,5 +84,6 @@ fn main() {
         } => loops::loops(interval, count, no_title, &cmd),
         Opt::Watch { dir, wait, cmd } => watch::watch(&dir, wait, &cmd),
         Opt::Lock { lock_file, cmd } => lock::lock(&lock_file, &cmd),
+        Opt::Gen {} => gen::gen(),
     }
 }
