@@ -77,6 +77,6 @@ fn main() {
             cmd,
         } => loops::loops(interval, count, no_title, &cmd),
         Opt::Watch { dir, wait, cmd } => watch::watch(&dir, wait, &cmd),
-        Opt::Lock { lock_file, cmd } => lock::lock(lock_file, &cmd),
+        Opt::Lock { lock_file, cmd } => lock::lock(&lock_file, &cmd),
     }
 }

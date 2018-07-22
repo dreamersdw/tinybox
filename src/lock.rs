@@ -4,7 +4,7 @@ use fs2::FileExt;
 use std::fs::OpenOptions;
 use std::process::{exit, Command};
 
-pub fn lock(lock_file: String, cmd: &[String]) {
+pub fn lock(lock_file: &str, cmd: &[String]) {
     let f = match OpenOptions::new().create(true).write(true).open(&lock_file) {
         Ok(f) => f,
         Err(e) => {
