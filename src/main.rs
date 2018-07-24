@@ -6,6 +6,7 @@ extern crate notify;
 
 use structopt::StructOpt;
 
+mod bits;
 mod gen;
 mod lock;
 mod loops;
@@ -67,6 +68,14 @@ enum Opt {
         cmd: Vec<String>,
     },
     #[structopt(
+        name = "bits",
+        about = "show the bit level layout for given numbers"
+    )]
+    Bits {
+        #[structopt(name = "nums", raw(required = "true"))]
+        nums: Vec<u64>,
+    },
+    #[structopt(
         name = "gen",
         about = "generate aliases for the tinybox tools"
     )]
@@ -84,6 +93,7 @@ fn main() {
         } => loops::loops(interval, count, no_title, &cmd),
         Opt::Watch { dir, wait, cmd } => watch::watch(&dir, wait, &cmd),
         Opt::Lock { lock_file, cmd } => lock::lock(&lock_file, &cmd),
+        Opt::Bits { nums } => bits::bits(&nums),
         Opt::Gen {} => gen::gen(),
     }
 }
