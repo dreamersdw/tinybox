@@ -1,4 +1,4 @@
-pub fn bits(nums: &Vec<u64>) {
+pub fn bits(nums: &[u64]) {
     for n in nums {
         for i in 0..63 {
             let b = n >> i & 1 as u64;

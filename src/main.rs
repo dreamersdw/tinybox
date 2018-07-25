@@ -2,12 +2,14 @@
 extern crate structopt;
 extern crate chrono;
 extern crate fs2;
+extern crate hyper;
 extern crate notify;
 
 use structopt::StructOpt;
 
 mod bits;
 mod gen;
+mod http;
 mod lock;
 mod loops;
 mod sum;
@@ -75,6 +77,11 @@ enum Opt {
         #[structopt(name = "nums", raw(required = "true"))]
         nums: Vec<u64>,
     },
+    #[structopt(name = "http", about = "start a http server")]
+    Http {
+        #[structopt(name = "port", short = "p", default_value = "3000")]
+        port: u16,
+    },
     #[structopt(
         name = "gen",
         about = "generate aliases for the tinybox tools"
@@ -94,6 +101,7 @@ fn main() {
         Opt::Watch { dir, wait, cmd } => watch::watch(&dir, wait, &cmd),
         Opt::Lock { lock_file, cmd } => lock::lock(&lock_file, &cmd),
         Opt::Bits { nums } => bits::bits(&nums),
+        Opt::Http { port } => http::http(port),
         Opt::Gen {} => gen::gen(),
     }
 }
